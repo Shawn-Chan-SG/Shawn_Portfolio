@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Experience – Shawn Chan | Singapore</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  /* ─── TIMELINE SLIDER ─── */
+  .tl-wrap {
+    background: var(--navy); border-radius: 16px; padding: 36px 36px 44px;
+    position: relative; overflow: hidden;
+  }
+  .tl-wrap::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:3px;
+    background: linear-gradient(90deg, var(--orange), var(--gold), var(--orange));
+  }
+  .tl-year-display { text-align:center; margin-bottom:28px; }
+  .tl-big-year {
+    font-size: clamp(3rem,8vw,5rem); font-weight:900; color:#fff; line-height:1; letter-spacing:-2px;
+  }
+  .tl-big-year span { color: var(--orange); }
+  .tl-year-sub { color: rgba(255,255,255,0.35); font-size:.75rem; letter-spacing:3px; text-transform:uppercase; margin-top:4px; }
+
+  .tl-card {
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+    border-left: 4px solid var(--orange); border-radius:10px; padding:22px 26px;
+    min-height:150px; transition: opacity .3s, transform .3s;
+  }
+  .tl-co { color:rgba(255,255,255,0.45); font-size:.75rem; letter-spacing:1px; text-transform:uppercase; margin-bottom:5px; }
+  .tl-role { color:#fff; font-size:1.15rem; font-weight:700; margin-bottom:6px; }
+  .tl-period { color:var(--gold); font-size:.78rem; font-weight:600; margin-bottom:10px; }
+  .tl-desc { color:rgba(255,255,255,0.68); font-size:.88rem; line-height:1.7; }
+  .tl-tag {
+    display:inline-block; margin-top:10px;
+    background:rgba(230,126,34,0.2); border:1px solid rgba(230,126,34,0.35);
+    color:#ffaa55; font-size:.7rem; font-weight:700;
+    padding:3px 10px; border-radius:20px; letter-spacing:.5px;
+  }
+
+  /* Scrubber */
+  .tl-scrubber-area { margin-top:28px; padding:0 8px; }
+  .tl-scrubber {
+    -webkit-appearance:none; appearance:none;
+    width:100%; height:6px; background:rgba(255,255,255,0.1); border-radius:3px;
+    outline:none; cursor:pointer;
+  }
+  .tl-scrubber::-webkit-slider-thumb {
+    -webkit-appearance:none; width:28px; height:28px; border-radius:50%;
+    background:#fff; border:4px solid var(--orange); cursor:grab;
+    box-shadow: 0 0 0 4px rgba(230,126,34,0.3), 0 4px 12px rgba(0,0,0,0.4);
+    transition: transform .1s, box-shadow .1s;
+  }
+  .tl-scrubber::-webkit-slider-thumb:active { cursor:grabbing; transform:scale(1.2); }
+  .tl-scrubber::-moz-range-thumb {
+    width:28px; height:28px; border-radius:50%;
+    background:#fff; border:4px solid var(--orange);
+  }
+  .tl-ticks { display:flex; justify-content:space-between; padding:8px 8px 0; }
+  .tl-tick { font-size:.68rem; color:rgba(255,255,255,0.3); cursor:pointer; transition:color .2s; }
+  .tl-tick:hover, .tl-tick.active { color:var(--gold); }
+
+  .tl-btns { display:flex; gap:14px; justify-content:center; margin-top:20px; }
+  .tl-btn {
+    background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.18);
+    color:#fff; border-radius:8px; padding:9px 22px; cursor:pointer;
+    font-size:.85rem; font-weight:600; transition:all .2s;
+    display:flex; align-items:center; gap:6px;
+  }
+  .tl-btn:hover { background:rgba(230,126,34,0.25); border-color:var(--orange); }
+  .tl-btn:disabled { opacity:.3; cursor:not-allowed; }
+
+  /* ─── EXPERIENCE CARDS ─── */
+  .exp-list { display:flex; flex-direction:column; gap:22px; }
+  .exp-card {
+    background:#fff; border-radius:var(--radius);
+    border:1px solid rgba(0,0,0,0.07);
+    border-left:5px solid var(--orange);
+    padding:26px 30px; transition:all .3s;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  }
+  .exp-card:hover { transform:translateX(5px); box-shadow:0 8px 28px rgba(0,0,0,0.1); border-left-color:var(--gold); }
+  .exp-top { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap; margin-bottom:10px; }
+  .exp-role { font-size:1.05rem; font-weight:700; color:var(--navy); }
+  .exp-co { color:var(--orange); font-size:.84rem; font-weight:600; margin-top:3px; }
+  .exp-period {
+    background:var(--navy); color:#fff;
+    padding:4px 12px; border-radius:20px; font-size:.72rem; font-weight:600; white-space:nowrap; flex-shrink:0;
+  }
+  .exp-desc { color:var(--muted); font-size:.88rem; line-height:1.7; }
+
+  @media (max-width:600px) {
+    .tl-wrap { padding:24px 18px 36px; }
+    .tl-ticks { display:none; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="mainNav">
+  <a href="index.html" class="nav-logo">SHAWN <span>CHAN</span></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="skills.html">Skills</a></li>
+    <li><a href="experience.html" class="active">Experience</a></li>
+    <li><a href="education.html">Education</a></li>
+    <li><a href="about.html#contact" class="nav-cta">Contact</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" onclick="toggleNav()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="breadcrumb">
+      <a href="index.html">Home</a><span>›</span><strong>Experience</strong>
+    </div>
+    <h1>Career Experience</h1>
+    <p>From construction sites in Australia to boardrooms across Asia — 20 years of progressive growth.</p>
+  </div>
+</div>
+
+<!-- TIMELINE SLIDER -->
+<section class="alt" id="timeline">
+  <div class="section-inner">
+    <div class="section-tag">Interactive Timeline</div>
+    <div class="section-divider"></div>
+    <h2 class="section-title reveal">Drag Through My Career</h2>
+    <p class="section-sub reveal">Use the slider, buttons, arrow keys, or swipe to travel year by year through my professional story.</p>
+
+    <div class="tl-wrap reveal">
+      <div class="tl-year-display">
+        <div class="tl-big-year"><span id="tlYear">2001</span></div>
+        <div class="tl-year-sub">Year in focus</div>
+      </div>
+      <div class="tl-card" id="tlCard">
+        <div class="tl-co" id="tlCo"></div>
+        <div class="tl-role" id="tlRole"></div>
+        <div class="tl-period" id="tlPeriod"></div>
+        <div class="tl-desc" id="tlDesc"></div>
+        <span class="tl-tag" id="tlTag"></span>
+      </div>
+      <div class="tl-scrubber-area">
+        <input type="range" class="tl-scrubber" id="tlScrubber" min="0" max="8" step="1" value="0">
+        <div class="tl-ticks" id="tlTicks"></div>
+      </div>
+      <div class="tl-btns">
+        <button class="tl-btn" id="tlPrev" onclick="tlNav(-1)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+          Prev
+        </button>
+        <button class="tl-btn" id="tlNext" onclick="tlNav(1)">
+          Next
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FULL EXPERIENCE LIST -->
+<section>
+  <div class="section-inner">
+    <div class="section-tag">Full Work History</div>
+    <div class="section-divider"></div>
+    <h2 class="section-title reveal">All Roles</h2>
+    <p class="section-sub reveal">A complete record of positions held across Singapore, Australia and the Asia Pacific region.</p>
+
+    <div class="exp-list">
+      <div class="exp-card reveal">
+        <div class="exp-top">
+          <div><div class="exp-role">Business Development Manager</div><div class="exp-co">ROCKWOOL Building Materials (Singapore) Pte Ltd</div></div>
+          <span class="exp-period">Feb 2020 – Present</span>
+        </div>
+        <p class="exp-desc">Responsible for Singapore Marketing and Asia business development for the insulated wall panel business. Developed regional strategic growth plans and drove implementation across local business units. Launched agriculture growing substrate products for vegetative production and fire protection products for buildings in 2023. Led post-acquisition merger of a local SME — covering negotiation, legal transfer, government approvals, employee onboarding, financial systems merger and stock transfer. Part of Singapore Business Management Team since 2016.</p>
+      </div>
+      <div class="exp-card reveal" style="transition-delay:.05s">
+        <div class="exp-top">
+          <div><div class="exp-role">Marketing &amp; Operations Manager</div><div class="exp-co">ROCKWOOL Building Materials (Singapore) Pte Ltd</div></div>
+          <span class="exp-period">Jan 2019 – Jan 2020</span>
+        </div>
+        <p class="exp-desc">Responsible for Singapore Marketing and Supply Chain operations. Led a team of technical marketing, sales specifier, customer service and logistics specialists. Implemented digital tools including the SAP pricing module, e-commerce shop and customer loyalty app. Launched new trading products into market and sourced alternative OEM vendors. Daily management of pre-sales activities, office management and logistics operations.</p>
+      </div>
+      <div class="exp-card reveal" style="transition-delay:.1s">
+        <div class="exp-top">
+          <div><div class="exp-role">Commercial Excellence Manager</div><div class="exp-co">ROCKWOOL Building Materials (Singapore) Pte Ltd</div></div>
+          <span class="exp-period">Jan 2017 – Dec 2018</span>
+        </div>
+        <p class="exp-desc">Developed South Asia pricing structure with Simon Kucher &amp; Partners consultants and implemented the pricing system across Singapore, Malaysia, Thailand and India. Translated pricing design to SAP for sales operations. Implemented Microsoft Dynamics CRM across all business units. Drove Sales Force Effectiveness (SFE) and introduced an Inside Sales function. Led a regional team covering market intelligence, sales specifiers and public affairs in South Asia.</p>
+      </div>
+      <div class="exp-card reveal" style="transition-delay:.05s">
+        <div class="exp-top">
+          <div><div class="exp-role">Head of Product Marketing</div><div class="exp-co">ROCKWOOL Building Materials (Singapore) Pte Ltd</div></div>
+          <span class="exp-period">Jun 2014 – Jan 2017</span>
+        </div>
+        <p class="exp-desc">Drove regional new product development and managed the South Asia insulation product portfolio. Developed product and go-to-market strategies to secure company growth targets. Regularly reviewed market conditions to ensure product portfolio fit. Developed product pricing and service pricing structures for the region. Participated in the Singapore business team and led the drive for Singapore business strategy.</p>
+      </div>
+      <div class="exp-card reveal" style="transition-delay:.1s">
+        <div class="exp-top">
+          <div><div class="exp-role">Head of Technical Services</div><div class="exp-co">ROCKWOOL Building Materials (Singapore) Pte Ltd</div></div>
+          <span class="exp-period">Oct 2010 – Jun 2014</span>
+        </div>
+        <p class="exp-desc">Set up the Asia technical team with 12 staff across China and South Asia, providing on-site and off-site technical support from pre-sales through to post-sales. Developed a structured regional technical training programme covering product application, thermal, condensation, acoustics and fire. Developed new insulation products for Asia markets including flat roof, ETICS and passive fire protection.</p>
+      </div>
+      <div class="exp-card reveal" style="transition-delay:.05s">
+        <div class="exp-top">
+          <div><div class="exp-role">Technical Sales Support Manager</div><div class="exp-co">ROXUL Asia Sdn Bhd, Singapore Representative Office</div></div>
+          <span class="exp-period">Jul 2008 – Oct 2010</span>
+        </div>
+        <p class="exp-desc">Supported Asia Pacific technical activities including design proposals, application guidance and product testing. Specialised in acoustics, thermal calculations, condensation analysis, construction detailing, partition and roofing insulation, and sandwich panels. Drove product development activities across the region.</p>
+      </div>
+      <div class="exp-card reveal" style="transition-delay:.1s">
+        <div class="exp-top">
+          <div><div class="exp-role">Key Account Manager</div><div class="exp-co">ROXUL Asia Sdn Bhd, Singapore Representative Office</div></div>
+          <span class="exp-period">Mar 2006 – Jun 2008</span>
+        </div>
+        <p class="exp-desc">Managed channel sales through distributors, resellers and contractors, ensuring maximum market penetration and brand awareness across Singapore through print media and seminars. Conducted pre-sales project specifications, consultant visits, daily sales operations and marketing activities.</p>
+      </div>
+      <div class="exp-card reveal" style="transition-delay:.05s">
+        <div class="exp-top">
+          <div><div class="exp-role">Assistant Building Certifier &amp; Surveyor</div><div class="exp-co">Project Building Certifiers Pty Ltd, Australia</div></div>
+          <span class="exp-period">Jan 2004 – Nov 2005</span>
+        </div>
+        <p class="exp-desc">Assessed and approved construction for building developments in accordance with Australian building codes and regulations. Issued building permits and statutory completion certificates. Conducted site inspections for compliance approval and prepared property status reports. Involved in the Alice Springs hospital fire compliance project and various schools, commercial and residential developments in the Northern Territory.</p>
+      </div>
+      <div class="exp-card reveal" style="transition-delay:.1s">
+        <div class="exp-top">
+          <div><div class="exp-role">Site &amp; Safety Supervisor</div><div class="exp-co">Tew Kim Thai Construction Pte Ltd, Singapore</div></div>
+          <span class="exp-period">Nov 2001 – Jun 2002</span>
+        </div>
+        <p class="exp-desc">Supervised general and structural works for the Land Transport Authority (LTA) underground project between City Link Mall and Esplanade. Served as Registered Safety Officer responsible for daily work scheduling, manpower allocation and site progress. Liaised with workers and sub-contractors for structural, architectural and M&amp;E works.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="bottom-page-nav">
+  <div class="bottom-page-nav-inner">
+    <a href="skills.html" class="pnav-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+      Skills
+    </a>
+    <div class="pnav-divider"></div>
+    <a href="education.html" class="pnav-link">
+      Education &amp; Awards
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+    </a>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 <strong>Chan Hon Pan, Shawn</strong> &nbsp;·&nbsp; Singapore &nbsp;·&nbsp; <a href="mailto:chanhonpan@gmail.com">chanhonpan@gmail.com</a></p>
+</footer>
+
+<script>
+function toggleNav() { document.getElementById('mainNav').classList.toggle('open'); }
+document.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => document.getElementById('mainNav').classList.remove('open')));
+const ro = new IntersectionObserver(e => e.forEach(x => x.isIntersecting && x.target.classList.add('visible')), { threshold: 0.1 });
+document.querySelectorAll('.reveal, .reveal-l, .reveal-r').forEach(el => ro.observe(el));
+
+/* ── TIMELINE DATA ── */
+const tlData = [
+  { year:'2001–2002', co:'Tew Kim Thai Construction Pte Ltd', role:'Site & Safety Supervisor', period:'Nov 2001 – Jun 2002', desc:'Supervised general and structural works for the LTA underground project between City Link Mall & Esplanade. Registered Safety Officer for safety matters. Responsible for daily scheduling, manpower allocation and site progress.', tag:'Construction' },
+  { year:'2004–2005', co:'Project Building Certifiers Pty Ltd, Australia', role:'Assistant Building Certifier & Surveyor', period:'Jan 2004 – Nov 2005', desc:'Assessed and approved building developments under Australian codes. Issued permits and completion certificates. Involved in the Alice Springs hospital fire compliance project and various NT developments.', tag:'Building Compliance' },
+  { year:'2006–2008', co:'ROXUL Asia Sdn Bhd', role:'Key Account Manager', period:'Mar 2006 – Jun 2008', desc:'Managed channel sales through distributors, resellers and contractors. Drove market penetration and brand awareness across Singapore through media and seminars.', tag:'Sales' },
+  { year:'2008–2010', co:'ROXUL Asia Sdn Bhd', role:'Technical Sales Support Manager', period:'Jul 2008 – Oct 2010', desc:'Supported Asia Pacific technical activities in design proposals and testing. Specialised in acoustics, thermal calculations, condensation, and sandwich panels.', tag:'Technical Sales' },
+  { year:'2010–2014', co:'ROCKWOOL Building Materials (S) Pte Ltd', role:'Head of Technical Services', period:'Oct 2010 – Jun 2014', desc:'Built a 12-person Asia technical team across China and South Asia. Developed regional training programmes on thermal, acoustics, condensation and fire. Created new insulation products for Asia markets.', tag:'Technical Leadership' },
+  { year:'2014–2017', co:'ROCKWOOL Building Materials (S) Pte Ltd', role:'Head of Product Marketing', period:'Jun 2014 – Jan 2017', desc:'Drove regional new product development and managed the South Asia insulation portfolio. Built product and go-to-market strategies and developed pricing structures across the region.', tag:'Product Marketing' },
+  { year:'2017–2018', co:'ROCKWOOL Building Materials (S) Pte Ltd', role:'Commercial Excellence Manager', period:'Jan 2017 – Dec 2018', desc:'Developed South Asia pricing structure with Simon Kucher & Partners. Implemented SAP pricing in 4 countries. Drove Sales Force Effectiveness and launched Inside Sales function.', tag:'Commercial Excellence' },
+  { year:'2019–2020', co:'ROCKWOOL Building Materials (S) Pte Ltd', role:'Marketing & Operations Manager', period:'Jan 2019 – Jan 2020', desc:'Led Singapore Marketing and Supply Chain. Managed teams across technical marketing, customer service and logistics. Implemented SAP pricing module, e-shop and loyalty app.', tag:'Marketing & Ops' },
+  { year:'2020–Present', co:'ROCKWOOL Building Materials (S) Pte Ltd', role:'Business Development Manager', period:'Feb 2020 – Present', desc:'Leading Singapore Marketing and Asia business development for insulated wall panels. Developed regional growth plans. Launched agriculture substrates and fire protection products in 2023. Led post-acquisition SME merger.', tag:'Business Development' },
+];
+
+let tlIdx = 0;
+
+function tlUpdate(idx, anim=true) {
+  tlIdx = idx;
+  const d = tlData[idx];
+  const card = document.getElementById('tlCard');
+
+  if (anim) { card.style.opacity='0'; card.style.transform='translateY(8px)'; }
+
+  setTimeout(() => {
+    document.getElementById('tlYear').textContent = d.year;
+    document.getElementById('tlCo').textContent = d.co;
+    document.getElementById('tlRole').textContent = d.role;
+    document.getElementById('tlPeriod').textContent = d.period;
+    document.getElementById('tlDesc').textContent = d.desc;
+    document.getElementById('tlTag').textContent = d.tag;
+
+    if (anim) {
+      card.style.transition = 'opacity .3s ease, transform .3s ease';
+      card.style.opacity='1'; card.style.transform='translateY(0)';
+    }
+
+    document.querySelectorAll('.tl-tick').forEach((t,i) => t.classList.toggle('active', i===idx));
+    document.getElementById('tlPrev').disabled = idx === 0;
+    document.getElementById('tlNext').disabled = idx === tlData.length-1;
+  }, anim ? 140 : 0);
+
+  document.getElementById('tlScrubber').value = idx;
+}
+
+function tlNav(dir) { tlUpdate(Math.max(0, Math.min(tlData.length-1, tlIdx+dir))); }
+
+// Build ticks
+const ticksEl = document.getElementById('tlTicks');
+tlData.forEach((d,i) => {
+  const t = document.createElement('span');
+  t.className = 'tl-tick'; t.textContent = d.year.split('–')[0];
+  t.onclick = () => tlUpdate(i);
+  ticksEl.appendChild(t);
+});
+
+document.getElementById('tlScrubber').addEventListener('input', e => tlUpdate(+e.target.value));
+
+document.addEventListener('keydown', e => {
+  const sec = document.getElementById('timeline');
+  const { top, bottom } = sec.getBoundingClientRect();
+  if (top < window.innerHeight && bottom > 0) {
+    if (e.key === 'ArrowLeft') tlNav(-1);
+    if (e.key === 'ArrowRight') tlNav(1);
+  }
+});
+
+let touchX = 0;
+const tlWrap = document.querySelector('.tl-wrap');
+tlWrap.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; });
+tlWrap.addEventListener('touchend', e => {
+  const diff = touchX - e.changedTouches[0].clientX;
+  if (Math.abs(diff) > 50) tlNav(diff > 0 ? 1 : -1);
+});
+
+tlUpdate(0, false);
+</script>
+</body>
+</html>

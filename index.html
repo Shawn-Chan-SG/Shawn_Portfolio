@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shawn Chan – Business Development Leader | Singapore</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  body { background: var(--night); overflow-x: hidden; }
+
+  /* ── CANVAS HERO ── */
+  #skyCanvas {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 0; display: block;
+  }
+  .hero-overlay {
+    position: relative; z-index: 2;
+    min-height: 100vh; padding-top: var(--nav-h);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding-bottom: 40px;
+  }
+  .hero-content {
+    text-align: center; padding: 0 5%;
+    max-width: 900px;
+  }
+  .hero-eyebrow {
+    display: inline-block; margin-bottom: 18px;
+    background: rgba(243,156,18,0.15);
+    border: 1px solid rgba(243,156,18,0.4);
+    color: var(--gold); font-size: 0.76rem; font-weight: 700;
+    letter-spacing: 3px; text-transform: uppercase;
+    padding: 6px 18px; border-radius: 30px;
+    animation: fadeSlideDown 1s ease 0.2s both;
+  }
+  .hero-name {
+    font-size: clamp(2.8rem, 8vw, 5.5rem);
+    font-weight: 900; color: var(--white); line-height: 1.0;
+    letter-spacing: -1px; margin-bottom: 8px;
+    animation: fadeSlideDown 1s ease 0.4s both;
+    text-shadow: 0 4px 30px rgba(0,0,0,0.6);
+  }
+  .hero-name em {
+    font-style: normal;
+    background: linear-gradient(90deg, var(--orange), var(--gold));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-title {
+    font-size: clamp(1rem, 2.5vw, 1.35rem);
+    color: rgba(255,255,255,0.75); font-weight: 400;
+    margin-bottom: 20px; letter-spacing: 0.3px;
+    animation: fadeSlideDown 1s ease 0.55s both;
+  }
+  .hero-bio {
+    font-size: clamp(0.9rem, 1.6vw, 1.05rem);
+    color: rgba(255,255,255,0.6); line-height: 1.7;
+    max-width: 620px; margin: 0 auto 36px;
+    animation: fadeSlideDown 1s ease 0.65s both;
+  }
+  .hero-btns {
+    display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;
+    margin-bottom: 56px;
+    animation: fadeSlideDown 1s ease 0.75s both;
+  }
+
+  /* ── NAV CARDS ── */
+  .nav-cards {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+    padding: 0 5%; max-width: 1000px; width: 100%;
+    animation: fadeSlideUp 1s ease 0.9s both;
+  }
+  .nav-card {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: var(--radius); padding: 22px 16px;
+    text-align: center; text-decoration: none;
+    transition: all 0.3s; backdrop-filter: blur(4px);
+    position: relative; overflow: hidden;
+  }
+  .nav-card::before {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--orange), var(--gold));
+    transform: scaleX(0); transition: transform 0.3s;
+  }
+  .nav-card:hover { background: rgba(255,255,255,0.13); border-color: rgba(230,126,34,0.4); transform: translateY(-4px); }
+  .nav-card:hover::before { transform: scaleX(1); }
+  .nav-card-icon { font-size: 1.8rem; margin-bottom: 10px; display: block; }
+  .nav-card-title { color: var(--white); font-weight: 700; font-size: 0.95rem; margin-bottom: 4px; }
+  .nav-card-sub { color: rgba(255,255,255,0.45); font-size: 0.75rem; }
+
+  /* ── SCROLL HINT ── */
+  .scroll-down {
+    position: absolute; bottom: 28px; left: 50%;
+    transform: translateX(-50%); z-index: 2;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    animation: fadeIn 1s ease 1.4s both;
+  }
+  .scroll-down span { color: rgba(255,255,255,0.3); font-size: 0.68rem; letter-spacing: 2.5px; text-transform: uppercase; }
+  .scroll-chevron { animation: bounce 1.8s ease-in-out infinite; }
+  .scroll-chevron svg { width: 20px; height: 20px; color: rgba(255,255,255,0.3); }
+  @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+
+  @keyframes fadeSlideDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; } to { opacity: 1; }
+  }
+
+  @media (max-width: 700px) {
+    .nav-cards { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 380px) {
+    .nav-cards { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- CANVAS BACKGROUND -->
+<canvas id="skyCanvas"></canvas>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a href="index.html" class="nav-logo">SHAWN <span>CHAN</span></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html" class="active">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="skills.html">Skills</a></li>
+    <li><a href="experience.html">Experience</a></li>
+    <li><a href="education.html">Education</a></li>
+    <li><a href="about.html#contact" class="nav-cta">Contact</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" onclick="toggleNav()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO OVERLAY -->
+<div class="hero-overlay">
+  <div class="hero-content">
+    <span class="hero-eyebrow">✦ Available for Senior Leadership Roles</span>
+    <h1 class="hero-name">Chan Hon Pan,<br><em>Shawn</em></h1>
+    <p class="hero-title">Business Development &amp; Marketing Leader &nbsp;·&nbsp; Asia Pacific</p>
+    <p class="hero-bio">
+      20+ years driving growth across Marketing, Product Management,
+      Pricing Excellence and Technical Marketing in Asia's most competitive markets.
+    </p>
+    <div class="hero-btns">
+      <a href="about.html" class="btn btn-primary">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        View Profile
+      </a>
+      <a href="experience.html" class="btn btn-ghost">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+        Career Journey
+      </a>
+    </div>
+
+    <!-- NAVIGATION CARDS -->
+    <div class="nav-cards">
+      <a href="about.html" class="nav-card">
+        <span class="nav-card-icon">👤</span>
+        <div class="nav-card-title">About</div>
+        <div class="nav-card-sub">Profile &amp; contact</div>
+      </a>
+      <a href="skills.html" class="nav-card">
+        <span class="nav-card-icon">🎯</span>
+        <div class="nav-card-title">Skills</div>
+        <div class="nav-card-sub">Expertise radar</div>
+      </a>
+      <a href="experience.html" class="nav-card">
+        <span class="nav-card-icon">💼</span>
+        <div class="nav-card-title">Experience</div>
+        <div class="nav-card-sub">20 years of work</div>
+      </a>
+      <a href="education.html" class="nav-card">
+        <span class="nav-card-icon">🎓</span>
+        <div class="nav-card-title">Education</div>
+        <div class="nav-card-sub">Degrees &amp; awards</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="scroll-down">
+    <span>Explore</span>
+    <div class="scroll-chevron">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════
+   NAV
+═══════════════════════════════════ */
+function toggleNav() {
+  document.getElementById('mainNav').classList.toggle('open');
+}
+
+/* ═══════════════════════════════════
+   SINGAPORE SUNSET SKYLINE ANIMATION
+═══════════════════════════════════ */
+const canvas = document.getElementById('skyCanvas');
+const ctx = canvas.getContext('2d');
+let W, H, time = 0;
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resize);
+resize();
+
+/* ── Stars ── */
+const stars = Array.from({ length: 150 }, () => ({
+  x: Math.random(),
+  y: Math.random() * 0.52,
+  r: Math.random() * 1.5 + 0.4,
+  phase: Math.random() * Math.PI * 2,
+  spd: Math.random() * 1.2 + 0.4,
+}));
+
+/* ── Clouds ── */
+const clouds = [
+  { x: 0.12, y: 0.18, sx: 1.3, op: 0.55, spd: 0.000055 },
+  { x: 0.45, y: 0.12, sx: 1.0, op: 0.45, spd: 0.000038 },
+  { x: 0.72, y: 0.22, sx: 0.85, op: 0.50, spd: 0.000048 },
+  { x: -0.08, y: 0.30, sx: 0.7, op: 0.40, spd: 0.000032 },
+];
+
+/* ── Skyline profile: [x_frac, height_frac_of_horizon] ── */
+/* Steps define the top-edge of the silhouette */
+const skyProfile = [
+  [0.000,0.00],[0.020,0.03],[0.038,0.07],[0.055,0.09],
+  [0.070,0.12],[0.085,0.10],[0.100,0.14],[0.115,0.16],
+  [0.128,0.13],[0.140,0.18],[0.152,0.20],[0.165,0.18],
+  [0.178,0.22],[0.193,0.24],[0.208,0.22],[0.222,0.27],
+  [0.238,0.25],[0.252,0.29],[0.265,0.32],[0.278,0.30],
+  [0.290,0.28],[0.305,0.33],[0.318,0.36],[0.330,0.34],
+  [0.345,0.38],[0.358,0.36],[0.372,0.34],[0.385,0.37],
+  /* Esplanade area */
+  [0.400,0.35],[0.413,0.38],[0.428,0.40],[0.440,0.42],
+  [0.453,0.40],[0.467,0.43],[0.480,0.41],[0.495,0.44],
+  [0.508,0.42],[0.522,0.45],[0.535,0.43],[0.550,0.46],
+  [0.562,0.44],[0.576,0.42],[0.590,0.44],[0.602,0.47],
+  /* MBS ZONE */
+  [0.615,0.45],
+  [0.627,0.46],[0.632,0.47],[0.640,0.47],[0.642,0.45],/* gap*/
+  [0.648,0.46],[0.654,0.48],[0.658,0.50],[0.664,0.50],/* center peak */
+  [0.668,0.49],[0.674,0.47],[0.678,0.45],/* gap */
+  [0.682,0.46],[0.688,0.48],[0.694,0.47],[0.700,0.45],
+  /* Post MBS */
+  [0.714,0.42],[0.728,0.38],[0.742,0.35],
+  /* Gardens/Supertrees */
+  [0.756,0.37],[0.764,0.30],[0.772,0.34],[0.780,0.27],
+  [0.788,0.31],[0.796,0.24],[0.808,0.22],
+  [0.822,0.20],[0.836,0.17],[0.850,0.14],
+  [0.865,0.11],[0.882,0.09],[0.900,0.07],
+  [0.920,0.05],[0.940,0.03],[0.970,0.02],[1.000,0.00],
+];
+
+/* ── Window hash (stable, deterministic) ── */
+function isLit(bx, row, col) {
+  const h = Math.sin(bx * 19.1 + row * 7.3 + col * 3.9) * 43758.5;
+  return (h - Math.floor(h)) > 0.12;
+}
+function winAlpha(bx, row, col, t) {
+  const h = Math.sin(bx * 19.1 + row * 7.3 + col * 3.9) * 43758.5;
+  const v = h - Math.floor(h);
+  if (v > 0.95) return Math.sin(t * 2.1 + v * 40) * 0.25 + 0.75;
+  return 0.85;
+}
+
+/* ── Draw sky ── */
+function drawSky() {
+  const hor = H * 0.60;
+  const g = ctx.createLinearGradient(0, 0, 0, hor);
+  g.addColorStop(0.00, '#03031a');
+  g.addColorStop(0.18, '#08082e');
+  g.addColorStop(0.38, '#1a0a4a');
+  g.addColorStop(0.58, '#4a1265');
+  g.addColorStop(0.74, '#8b1a6b');
+  g.addColorStop(0.86, '#c03828');
+  g.addColorStop(0.94, '#e06020');
+  g.addColorStop(1.00, '#f09020');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, W, hor);
+}
+
+/* ── Draw stars ── */
+function drawStars() {
+  stars.forEach(s => {
+    const alpha = (Math.sin(time * s.spd * 100 + s.phase) * 0.4 + 0.6);
+    ctx.globalAlpha = alpha * 0.9;
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.arc(s.x * W, s.y * H, s.r, 0, Math.PI * 2);
+    ctx.fill();
+  });
+  ctx.globalAlpha = 1;
+}
+
+/* ── Draw sun ── */
+function drawSun() {
+  const hor = H * 0.60;
+  const sx = W * 0.82, sy = hor - H * 0.006;
+  const R = H * 0.055;
+
+  // outer glow layers
+  [
+    [R * 4.5, 'rgba(240,130,30,0.06)'],
+    [R * 3.0, 'rgba(240,130,30,0.10)'],
+    [R * 2.0, 'rgba(240,150,40,0.16)'],
+    [R * 1.4, 'rgba(250,180,60,0.28)'],
+    [R * 1.0, 'rgba(255,210,100,0.85)'],
+  ].forEach(([r, c]) => {
+    const g = ctx.createRadialGradient(sx, sy, 0, sx, sy, r);
+    g.addColorStop(0, c); g.addColorStop(1, 'transparent');
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.arc(sx, sy, r, 0, Math.PI * 2);
+    ctx.fill();
+  });
+
+  // sun disk
+  const dg = ctx.createRadialGradient(sx, sy, 0, sx, sy, R);
+  dg.addColorStop(0, '#fff8d0'); dg.addColorStop(0.6, '#ffe070'); dg.addColorStop(1, '#f09020');
+  ctx.fillStyle = dg;
+  ctx.beginPath();
+  ctx.arc(sx, sy, R, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+/* ── Draw cloud shape ── */
+function drawCloudShape(cx, cy, sx) {
+  const s = sx * Math.min(W, 900) * 0.001;
+  ctx.beginPath();
+  ctx.moveTo(cx, cy);
+  ctx.bezierCurveTo(cx-s*25,cy-s*20, cx-s*65,cy-s*35, cx-s*85,cy-s*12);
+  ctx.bezierCurveTo(cx-s*105,cy+s*5, cx-s*95,cy+s*28, cx-s*72,cy+s*24);
+  ctx.bezierCurveTo(cx-s*52,cy+s*32, cx-s*28,cy+s*36, cx-s*8, cy+s*24);
+  ctx.bezierCurveTo(cx+s*18, cy+s*36, cx+s*52,cy+s*30, cx+s*62,cy+s*18);
+  ctx.bezierCurveTo(cx+s*80, cy+s*24, cx+s*92,cy+s*8, cx+s*80,cy-s*6);
+  ctx.bezierCurveTo(cx+s*100,cy-s*22, cx+s*62,cy-s*36, cx+s*28,cy-s*26);
+  ctx.bezierCurveTo(cx+s*18, cy-s*32, cx+s*8, cy-s*22, cx, cy);
+  ctx.closePath();
+  ctx.fill();
+}
+
+/* ── Draw clouds ── */
+function drawClouds() {
+  clouds.forEach(c => {
+    c.x -= c.spd;
+    if (c.x < -0.25) c.x = 1.2;
+    const cx = c.x * W, cy = c.y * H;
+    ctx.globalAlpha = c.op;
+    const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, 200 * c.sx);
+    g.addColorStop(0, '#f4a065'); g.addColorStop(0.6, '#c06040'); g.addColorStop(1, 'transparent');
+    ctx.fillStyle = g;
+    drawCloudShape(cx, cy, c.sx);
+  });
+  ctx.globalAlpha = 1;
+}
+
+/* ── Draw city silhouette ── */
+function drawCitySilhouette() {
+  const hor = H * 0.60;
+  ctx.fillStyle = '#06061c';
+  ctx.beginPath();
+  ctx.moveTo(0, hor);
+
+  // Walk the profile stepping blocks
+  for (let i = 0; i < skyProfile.length - 1; i++) {
+    const [x1, h1] = skyProfile[i];
+    const [x2]     = skyProfile[i + 1];
+    const bTop = hor - h1 * hor;
+    ctx.lineTo(x1 * W, bTop);
+    ctx.lineTo(x2 * W, bTop);
+  }
+  ctx.lineTo(W, hor);
+  ctx.lineTo(W, H + 4);
+  ctx.lineTo(0, H + 4);
+  ctx.closePath();
+  ctx.fill();
+}
+
+/* ── Draw MBS landmark ── */
+function drawMBS() {
+  const hor = H * 0.60;
+  const cx   = W * 0.664;
+  const tw   = W * 0.030;
+  const gap  = W * 0.005;
+
+  const towers = [
+    { x: cx - tw - gap - tw/2, hf: 0.46 },
+    { x: cx - tw/2,             hf: 0.50 },
+    { x: cx + gap + tw/2,       hf: 0.47 },
+  ];
+
+  towers.forEach((t, ti) => {
+    const th = hor * t.hf;
+    ctx.fillStyle = '#05051a';
+    ctx.fillRect(t.x, hor - th, tw, th);
+
+    // windows
+    const rows = 16, cols = 3;
+    const ww = (tw - 8) / cols - 1.5;
+    const wh = (th * 0.75) / rows - 2.5;
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        if (isLit(t.x, r, c)) {
+          const a = winAlpha(t.x, r, c, time);
+          const gy = Math.floor(160 + a * 35);
+          ctx.fillStyle = `rgba(255,${gy},75,${a * 0.9})`;
+          ctx.fillRect(
+            t.x + 4 + c * (ww + 1.5),
+            hor - th + th * 0.12 + r * ((th * 0.75) / rows),
+            ww, wh
+          );
+        }
+      }
+    }
+  });
+
+  // skypark deck
+  const minTop = hor - hor * 0.50;
+  const pkH = hor * 0.036, pkY = minTop - pkH;
+  const pkX = towers[0].x - 9;
+  const pkW = towers[2].x + tw + 9 - pkX;
+  ctx.fillStyle = '#05051a';
+  ctx.fillRect(pkX, pkY, pkW, pkH);
+  // infinity pool edge glow
+  ctx.strokeStyle = 'rgba(120,180,255,0.18)';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(pkX, pkY + 2); ctx.lineTo(pkX + pkW, pkY + 2); ctx.stroke();
+}
+
+/* ── Draw Esplanade domes ── */
+function drawEsplanade() {
+  const hor = H * 0.60;
+  ctx.fillStyle = '#06061c';
+  [[W * 0.396, hor * 0.14], [W * 0.422, hor * 0.12]].forEach(([dx, dr]) => {
+    ctx.beginPath();
+    ctx.arc(dx, hor, dr, Math.PI, 0);
+    ctx.fill();
+  });
+}
+
+/* ── Draw supertrees ── */
+function drawSupertrees() {
+  const hor = H * 0.60;
+  const trees = [
+    { x: W * 0.758, h: hor * 0.37, cr: hor * 0.095 },
+    { x: W * 0.773, h: hor * 0.27, cr: hor * 0.075 },
+    { x: W * 0.788, h: hor * 0.31, cr: hor * 0.080 },
+  ];
+  trees.forEach(({ x, h, cr }, idx) => {
+    ctx.fillStyle = '#04041a';
+    // stem
+    ctx.beginPath();
+    const sw = 10;
+    ctx.moveTo(x - sw/2, hor);
+    ctx.lineTo(x - sw/4, hor - h + cr);
+    ctx.lineTo(x + sw/4, hor - h + cr);
+    ctx.lineTo(x + sw/2, hor);
+    ctx.closePath(); ctx.fill();
+    // cap
+    ctx.beginPath();
+    ctx.ellipse(x, hor - h, cr, cr * 0.38, 0, 0, Math.PI * 2);
+    ctx.fill();
+    // light ring on cap
+    const numLights = 14;
+    for (let i = 0; i < numLights; i++) {
+      const a = (i / numLights) * Math.PI * 2;
+      const lx = x + Math.cos(a) * cr * 0.88;
+      const ly = (hor - h) + Math.sin(a) * cr * 0.34;
+      const flicker = Math.sin(time * 2.5 + i * 0.7 + idx * 1.3) * 0.4 + 0.6;
+      ctx.globalAlpha = flicker * 0.9;
+      ctx.fillStyle = i % 3 === 0 ? '#80e0ff' : '#60c0ff';
+      ctx.beginPath();
+      ctx.arc(lx, ly, 1.8, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  });
+}
+
+/* ── Draw water ── */
+function drawWater() {
+  const hor = H * 0.60;
+  const wg = ctx.createLinearGradient(0, hor, 0, H);
+  wg.addColorStop(0.00, '#3a1050');
+  wg.addColorStop(0.18, '#200830');
+  wg.addColorStop(0.50, '#100518');
+  wg.addColorStop(1.00, '#04030e');
+  ctx.fillStyle = wg;
+  ctx.fillRect(0, hor, W, H - hor);
+
+  // sun reflection streak
+  const sx = W * 0.82;
+  for (let i = 0; i < 18; i++) {
+    const ry = hor + (i * (H - hor) / 18);
+    const hw = (10 + i * 14) * (0.7 + Math.sin(time * 1.2 + i * 0.4) * 0.3);
+    const alpha = (0.5 - i / 36) * (0.6 + Math.sin(time * 0.8 + i) * 0.2);
+    ctx.globalAlpha = Math.max(0, alpha);
+    const rg = ctx.createLinearGradient(sx - hw, ry, sx + hw, ry);
+    rg.addColorStop(0, 'transparent');
+    rg.addColorStop(0.5, '#f0a030');
+    rg.addColorStop(1, 'transparent');
+    ctx.fillStyle = rg;
+    ctx.fillRect(sx - hw, ry, hw * 2, (H - hor) / 22);
+  }
+  ctx.globalAlpha = 1;
+
+  // city light reflections (vertical shimmers)
+  ctx.globalAlpha = 0.12;
+  for (let x = 0; x < W; x += 28) {
+    const shimH = 20 + Math.sin(time * 0.6 + x * 0.02) * 10;
+    const shimY = hor + 4 + Math.sin(time * 0.4 + x * 0.03) * 6;
+    ctx.fillStyle = '#ffb060';
+    ctx.fillRect(x, shimY, 3, shimH);
+  }
+  ctx.globalAlpha = 1;
+
+  // horizon glow line
+  ctx.strokeStyle = 'rgba(230,120,30,0.35)';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(0, hor); ctx.lineTo(W, hor); ctx.stroke();
+}
+
+/* ── Draw atmospheric haze near horizon ── */
+function drawHaze() {
+  const hor = H * 0.60;
+  const hg = ctx.createLinearGradient(0, hor - H * 0.08, 0, hor);
+  hg.addColorStop(0, 'transparent');
+  hg.addColorStop(1, 'rgba(180,60,10,0.14)');
+  ctx.fillStyle = hg;
+  ctx.fillRect(0, hor - H * 0.08, W, H * 0.08);
+}
+
+/* ── Main render loop ── */
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+  drawSky();
+  drawStars();
+  drawSun();
+  drawClouds();
+  drawCitySilhouette();
+  drawEsplanade();
+  drawMBS();
+  drawSupertrees();
+  drawWater();
+  drawHaze();
+  time += 0.005;
+  requestAnimationFrame(draw);
+}
+draw();
+</script>
+</body>
+</html>
